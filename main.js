@@ -1,6 +1,73 @@
 // Maheshwari Tours and Travels — site scripts
 // Plain JS, no build step, no external dependency.
 
+var WHATSAPP_NUMBER = '919307974659';
+
+// ---------- Vehicle fleet data ----------
+// Sedan / SUV / Premium SUV rates are the site's existing, previously-confirmed
+// airport-transfer figures (Dabolim & Mopa -> Calangute/Candolim/Panaji).
+// Tempo Traveller and Mini & Staff Bus point-to-point rates are NEW placeholder
+// figures added for this picker (modeled on typical Goa large-vehicle market
+// rates) — flag these two for R to confirm/replace before publishing.
+var VEHICLE_ORDER = ['sedan', 'suv', 'premium-suv', 'tempo-traveller', 'mini-staff-bus'];
+
+var VEHICLES = {
+  'sedan': {
+    name: 'Sedan',
+    tagline: 'Dzire or equivalent',
+    type: 'Car', ac: true, seats: 4,
+    rates: {
+      dabolim: [ { d: 'Calangute', p: 1300 }, { d: 'Candolim', p: 1300 }, { d: 'Panaji', p: 1100 } ],
+      mopa:    [ { d: 'Calangute', p: 1200 }, { d: 'Candolim', p: 1300 }, { d: 'Panaji', p: 1350 } ]
+    }
+  },
+  'suv': {
+    name: 'SUV',
+    tagline: 'Ertiga or equivalent',
+    type: 'MUV', ac: true, seats: 6,
+    rates: {
+      dabolim: [ { d: 'Calangute', p: 1600 }, { d: 'Candolim', p: 1600 }, { d: 'Panaji', p: 1350 } ],
+      mopa:    [ { d: 'Calangute', p: 1400 }, { d: 'Candolim', p: 1500 }, { d: 'Panaji', p: 1600 } ]
+    }
+  },
+  'premium-suv': {
+    name: 'Premium SUV',
+    tagline: 'Innova or equivalent',
+    type: 'SUV', ac: true, seats: 7,
+    rates: {
+      dabolim: [ { d: 'Calangute', p: 1900 }, { d: 'Candolim', p: 1900 }, { d: 'Panaji', p: 1600 } ],
+      mopa:    [ { d: 'Calangute', p: 1700 }, { d: 'Candolim', p: 1800 }, { d: 'Panaji', p: 1900 } ]
+    }
+  },
+  'tempo-traveller': {
+    name: 'Tempo Traveller',
+    tagline: '12–17 Seater AC Tempo Traveller',
+    type: 'Van', ac: true, seats: 15,
+    rates: {
+      dabolim: [ { d: 'Panaji', p: 3500 } ], // NEW — confirm with R
+      mopa:    [ { d: 'Panaji', p: 4500 } ]  // NEW — confirm with R
+    }
+  },
+  'mini-staff-bus': {
+    name: 'Mini & Staff Bus',
+    tagline: '30+ Seater AC Bus',
+    type: 'Bus', ac: true, seats: 30,
+    rates: {
+      dabolim: [ { d: 'Panaji', p: 5000 } ], // NEW — confirm with R
+      mopa:    [ { d: 'Panaji', p: 6000 } ]  // NEW — confirm with R
+    }
+  }
+};
+
+// Image files used on fleet cards + modal header
+var VEHICLE_IMAGES = {
+  'sedan': 'images/vehicle-sedan.svg',
+  'suv': 'images/vehicle-suv.svg',
+  'premium-suv': 'images/vehicle-premium-suv.svg',
+  'tempo-traveller': 'images/vehicle-tempo-traveller.svg',
+  'mini-staff-bus': 'images/vehicle-mini-staff-bus.svg'
+};
+
 document.addEventListener('DOMContentLoaded', function () {
 
   /* ---------- Mobile nav toggle ---------- */
@@ -32,112 +99,97 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ---------- Fare calculator ---------- */
-  // PLACEHOLDER RATES — modeled on typical Goa taxi market pricing.
-  // Replace with your actual verified rates before this site goes live.
-  var ROUTE_RATES = {
-    'dabolim-calangute':  { label: 'Dabolim Airport → Calangute',  km: 34, sedan: 1300, suv: 1600, premium: 1900 },
-    'dabolim-candolim':   { label: 'Dabolim Airport → Candolim',   km: 37, sedan: 1300, suv: 1600, premium: 1900 },
-    'mopa-calangute':     { label: 'Mopa Airport → Calangute',     km: 35, sedan: 1200, suv: 1400, premium: 1700 },
-    'mopa-candolim':      { label: 'Mopa Airport → Candolim',      km: 38, sedan: 1300, suv: 1500, premium: 1800 },
-    'madgaon-panaji':     { label: 'Madgaon Station → Panaji',     km: 33, sedan: 1200, suv: 1450, premium: 1700 },
-    'thivim-baga':        { label: 'Thivim Station → Baga',        km: 23, sedan: 1000, suv: 1200, premium: 1400 },
-    'colva-madgaon':      { label: 'Colva → Madgaon Station',      km: 8,  sedan: 600,  suv: 800,  premium: 950  },
-    'calangute-anjuna':   { label: 'Calangute → Anjuna',           km: 6,  sedan: 600,  suv: 700,  premium: 850  }
-  };
-  var HOURLY_RATES = {
-    '4':  { label: '4 Hours / 40 KM',   sedan: 1400, suv: 1800 },
-    '8':  { label: '8 Hours / 80 KM',   sedan: 2500, suv: 3200 },
-    '12': { label: '12 Hours / 120 KM', sedan: 3400, suv: 4300 }
-  };
-  var OUTSTATION_PER_KM = { sedan: 13, suv: 17, premium: 20 };
-  var OUTSTATION_MIN_KM = 250; // typical round-trip minimum billing for outstation
+  /* ---------- Vehicle fleet modal ---------- */
+  var modal = document.getElementById('vehicle-modal');
+  if (!modal) return; // pages without the picker (legal pages etc.) stop here
 
-  var calc = document.getElementById('fare-calculator');
-  if (calc) {
-    var tabs = calc.querySelectorAll('.calc-tab');
-    var panels = calc.querySelectorAll('.calc-panel');
+  var modalClose = document.getElementById('modal-close');
+  var modalName = document.getElementById('modal-vehicle-name');
+  var modalTagline = document.getElementById('modal-vehicle-tagline');
+  var modalBadges = document.getElementById('modal-badges');
+  var modalIcon = document.getElementById('modal-icon');
+  var modalRateBody = document.getElementById('modal-rate-body');
+  var modalBookLink = document.getElementById('modal-book-link');
+  var modalTabs = modal.querySelectorAll('.modal-tab');
+  var pkgHalfLink = document.getElementById('pkg-half-link');
+  var pkgFullLink = document.getElementById('pkg-full-link');
+  var pkgOutstationLink = document.getElementById('pkg-outstation-link');
 
-    tabs.forEach(function (tab) {
-      tab.addEventListener('click', function () {
-        tabs.forEach(function (t) { t.classList.remove('active'); });
-        tab.classList.add('active');
-        var target = tab.getAttribute('data-target');
-        panels.forEach(function (p) {
-          p.style.display = (p.id === target) ? 'block' : 'none';
-        });
-      });
-    });
+  var currentVehicleId = null;
 
-    // Route tab
-    var routeSelect = document.getElementById('calc-route');
-    var routeResultSedan = document.getElementById('route-result-sedan');
-    var routeResultSuv = document.getElementById('route-result-suv');
-    var routeWhatsapp = document.getElementById('route-whatsapp-link');
-    function updateRoute() {
-      if (!routeSelect) return;
-      var r = ROUTE_RATES[routeSelect.value];
-      if (!r) return;
-      routeResultSedan.textContent = '₹' + r.sedan.toLocaleString('en-IN');
-      routeResultSuv.textContent = '₹' + r.suv.toLocaleString('en-IN');
-      if (routeWhatsapp) {
-        var msg = 'Hi Maheshwari Tours and Travels, I would like to book a taxi for ' + r.label +
-          ' (' + r.km + ' km). Sedan fare: ₹' + r.sedan + ', SUV fare: ₹' + r.suv + '.';
-        routeWhatsapp.href = 'https://wa.me/919307974659?text=' + encodeURIComponent(msg);
-      }
-    }
-    if (routeSelect) {
-      routeSelect.addEventListener('change', updateRoute);
-      updateRoute();
-    }
-
-    // Hourly tab
-    var hourSelect = document.getElementById('calc-hours');
-    var hourResultSedan = document.getElementById('hour-result-sedan');
-    var hourResultSuv = document.getElementById('hour-result-suv');
-    var hourWhatsapp = document.getElementById('hour-whatsapp-link');
-    function updateHourly() {
-      if (!hourSelect) return;
-      var h = HOURLY_RATES[hourSelect.value];
-      if (!h) return;
-      hourResultSedan.textContent = '₹' + h.sedan.toLocaleString('en-IN');
-      hourResultSuv.textContent = '₹' + h.suv.toLocaleString('en-IN');
-      if (hourWhatsapp) {
-        var msg = 'Hi Maheshwari Tours and Travels, I would like to book an hourly rental (' + h.label +
-          '). Sedan fare: ₹' + h.sedan + ', SUV fare: ₹' + h.suv + '.';
-        hourWhatsapp.href = 'https://wa.me/919307974659?text=' + encodeURIComponent(msg);
-      }
-    }
-    if (hourSelect) {
-      hourSelect.addEventListener('change', updateHourly);
-      updateHourly();
-    }
-
-    // Outstation tab
-    var kmInput = document.getElementById('calc-km');
-    var outResultSedan = document.getElementById('out-result-sedan');
-    var outResultSuv = document.getElementById('out-result-suv');
-    var outResultPremium = document.getElementById('out-result-premium');
-    var outWhatsapp = document.getElementById('out-whatsapp-link');
-    function updateOutstation() {
-      if (!kmInput) return;
-      var km = Math.max(parseInt(kmInput.value, 10) || 0, OUTSTATION_MIN_KM);
-      var sedan = km * OUTSTATION_PER_KM.sedan;
-      var suv = km * OUTSTATION_PER_KM.suv;
-      var premium = km * OUTSTATION_PER_KM.premium;
-      outResultSedan.textContent = '₹' + sedan.toLocaleString('en-IN');
-      outResultSuv.textContent = '₹' + suv.toLocaleString('en-IN');
-      outResultPremium.textContent = '₹' + premium.toLocaleString('en-IN');
-      if (outWhatsapp) {
-        var msg = 'Hi Maheshwari Tours and Travels, I would like an outstation quote for approx ' + km +
-          ' km. Sedan: ₹' + sedan + ', SUV: ₹' + suv + ', Premium SUV: ₹' + premium + '.';
-        outWhatsapp.href = 'https://wa.me/919307974659?text=' + encodeURIComponent(msg);
-      }
-    }
-    if (kmInput) {
-      kmInput.addEventListener('input', updateOutstation);
-      updateOutstation();
-    }
+  function waLink(message) {
+    return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
   }
+
+  function renderRateTable(vehicleId, pickup) {
+    var v = VEHICLES[vehicleId];
+    if (!v || !modalRateBody) return;
+    var pickupLabel = pickup === 'dabolim' ? 'Dabolim Airport' : 'Mopa Airport';
+    modalRateBody.innerHTML = '';
+    v.rates[pickup].forEach(function (row) {
+      var tr = document.createElement('tr');
+      var priceClass = pickup === 'dabolim' ? 'price-sedan' : 'price-suv';
+      tr.innerHTML =
+        '<td class="route-name">' + pickupLabel + ' → ' + row.d + '</td>' +
+        '<td class="num ' + priceClass + '">₹' + row.p.toLocaleString('en-IN') + '</td>' +
+        '<td class="num"><a href="' + waLink('Hi Maheshwari Tours and Travels, I would like to book a ' + v.name + ' from ' + pickupLabel + ' to ' + row.d + '. Fare: ₹' + row.p + '.') + '" target="_blank" rel="noopener noreferrer" class="btn-enquire">Book</a></td>';
+      modalRateBody.appendChild(tr);
+    });
+  }
+
+  function openModal(vehicleId) {
+    var v = VEHICLES[vehicleId];
+    if (!v) return;
+    currentVehicleId = vehicleId;
+
+    modalName.textContent = v.name;
+    modalTagline.textContent = v.tagline;
+    modalIcon.innerHTML = '<img src="' + (VEHICLE_IMAGES[vehicleId] || '') + '" alt="' + v.name + '" width="120" height="64">';
+    modalBadges.innerHTML =
+      '<span class="vbadge">' + (v.ac ? 'AC' : 'Non-AC') + '</span>' +
+      '<span class="vbadge">' + v.seats + ' Seats</span>' +
+      '<span class="vbadge">' + v.type + '</span>';
+
+    modalTabs.forEach(function (t) {
+      t.classList.toggle('active', t.getAttribute('data-pickup') === 'dabolim');
+    });
+    renderRateTable(vehicleId, 'dabolim');
+
+    modalBookLink.href = waLink('Hi Maheshwari Tours and Travels, I would like to book a ' + v.name + '. Please share availability.');
+
+    pkgHalfLink.href = waLink('Hi Maheshwari Tours and Travels, I would like a Half Day package quote for a ' + v.name + '.');
+    pkgFullLink.href = waLink('Hi Maheshwari Tours and Travels, I would like a Full Day package quote for a ' + v.name + '.');
+    pkgOutstationLink.href = waLink('Hi Maheshwari Tours and Travels, I would like an Outstation multi-day package quote for a ' + v.name + '.');
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.vehicle-card').forEach(function (card) {
+    card.addEventListener('click', function () {
+      openModal(card.getAttribute('data-vehicle'));
+    });
+  });
+
+  if (modalClose) modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+
+  modalTabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      modalTabs.forEach(function (t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      renderRateTable(currentVehicleId, tab.getAttribute('data-pickup'));
+    });
+  });
 
 });

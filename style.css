@@ -678,6 +678,7 @@ img, svg { display: block; }
   cursor: pointer;
 }
 .calc-tab.active { background: var(--ink); color: var(--paper); }
+.calc-panel { }
 .calc-row { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 14px; }
 .calc-field label {
   display: block;
@@ -913,4 +914,212 @@ img, svg { display: block; }
 }
 @media (min-width: 1024px) {
   .two-col { grid-template-columns: 1.1fr 0.9fr; align-items: start; }
+}
+
+/* ============================================================
+   VEHICLE FLEET PICKER + MODAL (same pattern site-wide)
+   ============================================================ */
+
+.vehicle-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.vehicle-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  padding: 18px;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.vehicle-card:hover { box-shadow: 6px 6px 0 var(--marigold); transform: translate(-2px, -2px); }
+.vehicle-icon { display: block; width: 100%; margin: -18px -18px 12px; }
+.vehicle-icon img { display: block; width: 100%; height: auto; border-bottom: 2px solid var(--ink); }
+.vehicle-name { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; color: var(--ink); text-transform: uppercase; }
+.vehicle-tagline { font-size: 12.5px; color: var(--ink2); opacity: 0.75; }
+.vehicle-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.vbadge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+/* Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 33, 59, 0.65);
+  z-index: 100;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal-panel {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--marigold);
+  max-width: 640px;
+  width: 100%;
+  padding: 24px;
+  position: relative;
+  margin: 30px auto;
+}
+.modal-close {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 34px; height: 34px;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
+.modal-head { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-right: 40px; }
+.modal-icon { flex-shrink: 0; width: 120px; border: 2px solid var(--ink); overflow: hidden; }
+.modal-icon img { display: block; width: 100%; height: auto; }
+.modal-head h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; margin: 0 0 2px; color: var(--ink); text-transform: uppercase; }
+.modal-tagline { font-size: 13px; color: var(--ink2); opacity: 0.75; margin: 0 0 6px; }
+
+.modal-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.modal-tab {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+}
+.modal-tab.active { background: var(--ink); color: var(--paper); }
+.modal-packages { border-top: 2px dashed var(--line); padding-top: 4px; }
+
+.btn-enquire {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 700;
+  background: var(--go);
+  color: var(--paper);
+  padding: 8px 14px;
+  border: 2px solid var(--go);
+  white-space: nowrap;
+}
+.btn-enquire:hover { opacity: 0.9; }
+
+.package-mini-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.package-mini {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  padding: 12px 14px;
+  gap: 12px;
+}
+.package-mini-name { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--ink); }
+.package-mini-name span { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink2); opacity: 0.7; margin-top: 2px; }
+
+@media (min-width: 600px) {
+  .vehicle-grid { grid-template-columns: repeat(2, 1fr); }
+  .package-mini-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 900px) {
+  .vehicle-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1024px) {
+  .vehicle-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ============================================================
+   TOUR PACKAGES (quote-based, no fixed prices)
+   ============================================================ */
+
+.vehicle-ref-strip { margin-bottom: 8px; }
+.vref-list { display: flex; flex-wrap: wrap; gap: 10px; }
+.vref-chip {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  padding: 8px 12px;
+  border-radius: 3px;
+}
+.vref-chip em {
+  font-style: normal;
+  color: var(--marigold2);
+  font-weight: 700;
+  margin-left: 5px;
+}
+
+.tour-cat-heading {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin: 44px 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--marigold);
+}
+
+.tour-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+.tour-card {
+  border: 2px solid var(--ink);
+  background: var(--white);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tour-card-image { margin: -20px -20px 4px; }
+.tour-card-image img { display: block; width: 100%; height: auto; border-bottom: 2px solid var(--ink); }
+.tour-card.featured { box-shadow: 6px 6px 0 var(--marigold); }
+.tour-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.tour-card-top h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; margin: 0; color: var(--ink); text-transform: uppercase; }
+.tour-duration {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--marigold);
+  color: var(--ink);
+  padding: 4px 9px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.tour-desc { font-size: 13.5px; color: var(--ink2); opacity: 0.85; flex-grow: 1; }
+.tour-vehicles { font-family: var(--font-mono); font-size: 11px; color: var(--ink2); opacity: 0.7; letter-spacing: 0.01em; }
+
+@media (min-width: 700px) {
+  .tour-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .tour-grid { grid-template-columns: repeat(4, 1fr); }
 }
