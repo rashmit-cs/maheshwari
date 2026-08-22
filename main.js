@@ -9,7 +9,7 @@ var WHATSAPP_NUMBER = '919307974659';
 // Tempo Traveller and Mini & Staff Bus point-to-point rates are NEW placeholder
 // figures added for this picker (modeled on typical Goa large-vehicle market
 // rates) — flag these two for R to confirm/replace before publishing.
-var VEHICLE_ORDER = ['sedan', 'suv', 'premium-suv', 'tempo-traveller', 'mini-staff-bus'];
+var VEHICLE_ORDER = ['sedan', 'suv', 'premium-suv', 'luxury-suv', 'tempo-traveller', 'mini-staff-bus', 'staff-bus'];
 
 var VEHICLES = {
   'sedan': {
@@ -56,16 +56,33 @@ var VEHICLES = {
       dabolim: [ { d: 'Panaji', p: 5000 } ], // NEW — confirm with R
       mopa:    [ { d: 'Panaji', p: 6000 } ]  // NEW — confirm with R
     }
+  },
+  // Added by R — no fare data supplied yet, so this is quote-only
+  // (no ₹ figures invented). Modal shows an Enquire message instead
+  // of a fare table for any vehicle with quoteOnly: true.
+  'luxury-suv': {
+    name: 'Luxury SUV',
+    tagline: 'Fortuner or equivalent',
+    type: 'SUV', ac: true, seats: 6,
+    quoteOnly: true
+  },
+  'staff-bus': {
+    name: 'Staff Bus',
+    tagline: 'Dedicated Corporate Staff Bus',
+    type: 'Bus', ac: true, seats: 40,
+    quoteOnly: true
   }
 };
 
 // Image files used on fleet cards + modal header
 var VEHICLE_IMAGES = {
-  'sedan': 'images/vehicle-sedan.svg',
-  'suv': 'images/vehicle-suv.svg',
-  'premium-suv': 'images/vehicle-premium-suv.svg',
-  'tempo-traveller': 'images/vehicle-tempo-traveller.svg',
-  'mini-staff-bus': 'images/vehicle-mini-staff-bus.svg'
+  'sedan': 'images/vehicle-sedan.jpg',
+  'suv': 'images/vehicle-suv.jpg',
+  'premium-suv': 'images/vehicle-premium-suv.jpg',
+  'tempo-traveller': 'images/vehicle-tempo-traveller.jpg',
+  'mini-staff-bus': 'images/vehicle-mini-staff-bus.jpg',
+  'luxury-suv': 'images/vehicle-luxury-suv.jpg',
+  'staff-bus': 'images/vehicle-staff-bus.jpg'
 };
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -124,6 +141,14 @@ document.addEventListener('DOMContentLoaded', function () {
   function renderRateTable(vehicleId, pickup) {
     var v = VEHICLES[vehicleId];
     if (!v || !modalRateBody) return;
+
+    if (v.quoteOnly) {
+      modalRateBody.innerHTML =
+        '<tr><td colspan="3" style="text-align:center; padding:18px; font-family:var(--font-body); color:var(--ink2);">' +
+        'Rates for the ' + v.name + ' are quote-based — tap below to get pricing on WhatsApp.</td></tr>';
+      return;
+    }
+
     var pickupLabel = pickup === 'dabolim' ? 'Dabolim Airport' : 'Mopa Airport';
     modalRateBody.innerHTML = '';
     v.rates[pickup].forEach(function (row) {
@@ -150,12 +175,15 @@ document.addEventListener('DOMContentLoaded', function () {
       '<span class="vbadge">' + v.seats + ' Seats</span>' +
       '<span class="vbadge">' + v.type + '</span>';
 
+    // Pickup tabs only make sense when there's per-route rate data
     modalTabs.forEach(function (t) {
+      t.style.display = v.quoteOnly ? 'none' : '';
       t.classList.toggle('active', t.getAttribute('data-pickup') === 'dabolim');
     });
     renderRateTable(vehicleId, 'dabolim');
 
-    modalBookLink.href = waLink('Hi Maheshwari Tours and Travels, I would like to book a ' + v.name + '. Please share availability.');
+    modalBookLink.textContent = v.quoteOnly ? 'Get a Quote on WhatsApp' : 'Book This Vehicle on WhatsApp';
+    modalBookLink.href = waLink('Hi Maheshwari Tours and Travels, I would like ' + (v.quoteOnly ? 'a quote for a ' : 'to book a ') + v.name + '. Please share availability' + (v.quoteOnly ? ' and pricing.' : '.'));
 
     pkgHalfLink.href = waLink('Hi Maheshwari Tours and Travels, I would like a Half Day package quote for a ' + v.name + '.');
     pkgFullLink.href = waLink('Hi Maheshwari Tours and Travels, I would like a Full Day package quote for a ' + v.name + '.');
