@@ -116,6 +116,50 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  /* ---------- Header shadow on scroll (runs on every page) ---------- */
+  var header = document.querySelector('.site-header');
+  if (header) {
+    var updateHeaderScroll = function () {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+    };
+    updateHeaderScroll();
+    window.addEventListener('scroll', updateHeaderScroll, { passive: true });
+  }
+
+  /* ---------- Scroll-reveal animations (runs on every page) ---------- */
+  var revealSelectors = [
+    '.vehicle-card', '.tour-card', '.service-card',
+    '.info-card', '.route-card', '.why-item', '.testimonial-card',
+    '.package-card', '.package-mini', '.faq-item'
+  ];
+  var revealTargets = document.querySelectorAll(revealSelectors.join(','));
+
+  if (revealTargets.length && 'IntersectionObserver' in window) {
+    // Stagger cards within the same grid/parent, reset the counter per parent
+    var staggerCounters = new WeakMap();
+    revealTargets.forEach(function (el) {
+      el.classList.add('reveal');
+      var parent = el.parentElement;
+      var count = staggerCounters.get(parent) || 0;
+      el.style.setProperty('--reveal-index', Math.min(count, 8)); // cap delay growth
+      staggerCounters.set(parent, count + 1);
+    });
+
+    var revealObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    revealTargets.forEach(function (el) { revealObserver.observe(el); });
+  } else {
+    // No IntersectionObserver support (very old browser) — just show everything
+    revealTargets.forEach(function (el) { el.classList.add('reveal', 'is-visible'); });
+  }
+
   /* ---------- Vehicle fleet modal ---------- */
   var modal = document.getElementById('vehicle-modal');
   if (!modal) return; // pages without the picker (legal pages etc.) stop here

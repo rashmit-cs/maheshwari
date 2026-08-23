@@ -165,11 +165,9 @@ img, svg { display: block; }
 }
 
 .mobile-menu {
-  display: none;
   border-top: 2px solid var(--ink);
   background: var(--paper);
 }
-.mobile-menu.open { display: block; }
 .mobile-menu-inner {
   max-width: 1180px;
   margin: 0 auto;
@@ -958,7 +956,6 @@ img, svg { display: block; }
 
 /* Modal */
 .modal-overlay {
-  display: none;
   position: fixed;
   inset: 0;
   background: rgba(18, 33, 59, 0.65);
@@ -968,7 +965,6 @@ img, svg { display: block; }
   padding: 20px;
   overflow-y: auto;
 }
-.modal-overlay.open { display: flex; }
 .modal-panel {
   background: var(--paper);
   border: 2px solid var(--ink);
@@ -1122,4 +1118,100 @@ img, svg { display: block; }
 }
 @media (min-width: 1024px) {
   .tour-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ============================================================
+   MOTION SYSTEM — scroll reveal, smoother transitions,
+   refined hover physics. Fully responsive, all breakpoints
+   already covered by the layout rules above; this only adds
+   motion on top of the existing responsive grid.
+   ============================================================ */
+
+/* Smoother, springier hover on cards site-wide (was flat 0.15s linear) */
+.vehicle-card, .tour-card, .service-card, .fleet-item, .info-card,
+.route-card, .why-item, .testimonial-card, .package-card, .package-mini {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.vehicle-card:hover, .tour-card:hover, .service-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Sticky header gains a soft shadow once the page scrolls (JS toggles .is-scrolled) */
+.site-header {
+  transition: box-shadow 0.25s ease, background-color 0.25s ease;
+}
+.site-header.is-scrolled {
+  box-shadow: 0 4px 16px rgba(18, 33, 59, 0.12);
+}
+
+/* Mobile menu — slide/fade instead of instant show/hide */
+.mobile-menu {
+  display: block;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+}
+.mobile-menu.open {
+  max-height: 400px;
+  opacity: 1;
+}
+
+/* Modal — fade + gentle scale instead of instant flex toggle */
+.modal-overlay {
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s ease, visibility 0s linear 0s;
+}
+.modal-panel {
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.modal-overlay.open .modal-panel {
+  transform: translateY(0) scale(1);
+}
+
+/* Scroll-reveal — elements start hidden/offset, JS adds .is-visible
+   when they enter the viewport via IntersectionObserver */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Staggered children within a revealed grid (set by JS via --reveal-index) */
+.reveal[style*="--reveal-index"] {
+  transition-delay: calc(var(--reveal-index, 0) * 60ms);
+}
+
+/* Button press feedback — small, tactile, not flashy */
+.btn, .btn-block, .btn-enquire, .btn-primary, .btn-whatsapp {
+  transition: transform 0.15s ease, opacity 0.15s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.btn:active, .btn-block:active, .btn-enquire:active {
+  transform: scale(0.97);
+}
+
+/* Respect reduced-motion: kill all of the above instantly, no exceptions */
+@media (prefers-reduced-motion: reduce) {
+  .vehicle-card, .tour-card, .service-card, .fleet-item, .info-card,
+  .route-card, .why-item, .testimonial-card, .package-card, .package-mini,
+  .site-header, .mobile-menu, .modal-overlay, .modal-panel,
+  .reveal, .btn, .btn-block, .btn-enquire, .btn-primary, .btn-whatsapp {
+    transition: none !important;
+    transform: none !important;
+  }
+  .reveal { opacity: 1 !important; }
+  .mobile-menu { max-height: none !important; opacity: 1 !important; }
 }
