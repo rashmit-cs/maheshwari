@@ -4,11 +4,9 @@
 var WHATSAPP_NUMBER = '919307974659';
 
 // ---------- Vehicle fleet data ----------
-// Sedan / SUV / Premium SUV rates are the site's existing, previously-confirmed
-// airport-transfer figures (Dabolim & Mopa -> Calangute/Candolim/Panaji).
-// Tempo Traveller and Mini & Staff Bus point-to-point rates are NEW placeholder
-// figures added for this picker (modeled on typical Goa large-vehicle market
-// rates) — flag these two for R to confirm/replace before publishing.
+// Sedan / SUV / Premium SUV rates are indicative airport-transfer fares shown on
+// airport-transfer.html and routes.html. Larger vehicles (Tempo Traveller, buses)
+// are quote-only until the operator supplies confirmed fares — no figures are invented.
 var VEHICLE_ORDER = ['sedan', 'suv', 'premium-suv', 'luxury-suv', 'tempo-traveller', 'mini-staff-bus', 'staff-bus'];
 
 var VEHICLES = {
@@ -43,23 +41,15 @@ var VEHICLES = {
     name: 'Tempo Traveller',
     tagline: '12–17 Seater AC Tempo Traveller',
     type: 'Van', ac: true, seats: 15,
-    rates: {
-      dabolim: [ { d: 'Panaji', p: 3500 } ], // NEW — confirm with R
-      mopa:    [ { d: 'Panaji', p: 4500 } ]  // NEW — confirm with R
-    }
+    quoteOnly: true
   },
   'mini-staff-bus': {
     name: 'Mini & Staff Bus',
     tagline: '30+ Seater AC Bus',
     type: 'Bus', ac: true, seats: 30,
-    rates: {
-      dabolim: [ { d: 'Panaji', p: 5000 } ], // NEW — confirm with R
-      mopa:    [ { d: 'Panaji', p: 6000 } ]  // NEW — confirm with R
-    }
+    quoteOnly: true
   },
-  // Added by R — no fare data supplied yet, so this is quote-only
-  // (no ₹ figures invented). Modal shows an Enquire message instead
-  // of a fare table for any vehicle with quoteOnly: true.
+  // quoteOnly vehicles show an Enquire message instead of a fare table.
   'luxury-suv': {
     name: 'Luxury SUV',
     tagline: 'Fortuner or equivalent',
@@ -85,6 +75,19 @@ var VEHICLE_IMAGES = {
   'staff-bus': 'images/vehicle-staff-bus.jpg'
 };
 
+// Alt text for fleet images (illustrative images, not photos of specific vehicles)
+var VEHICLE_ALT = {
+  'sedan': 'Illustrative image: white sedan with Maheshwari Tours & Travels branding on a Goa coastal road',
+  'suv': 'Illustrative image: white six-seater MUV with Maheshwari Tours & Travels branding on a Goa coastal road',
+  'premium-suv': 'Illustrative image: white seven-seater SUV with Maheshwari Tours & Travels branding on a Goa coastal road',
+  'tempo-traveller': 'Illustrative image: white Tempo Traveller minibus with Maheshwari Tours & Travels branding beside the sea',
+  'mini-staff-bus': 'Illustrative image: white 30-seater coach with Maheshwari Tours & Travels branding on a Goa coastal road',
+  'luxury-suv': 'Illustrative image: white luxury SUV with Maheshwari Tours & Travels branding on a Goa coastal road',
+  'staff-bus': 'Illustrative image: white 40-seater staff bus with Maheshwari Tours & Travels branding on a Goa coastal road'
+};
+
+var NEW_TAB_NOTE = '<span class="sr-only"> (opens in a new tab)</span>';
+
 document.addEventListener('DOMContentLoaded', function () {
 
   /* ---------- Mobile nav toggle ---------- */
@@ -95,6 +98,13 @@ document.addEventListener('DOMContentLoaded', function () {
       menu.classList.toggle('open');
       menuBtn.setAttribute('aria-expanded', menu.classList.contains('open') ? 'true' : 'false');
     });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        menuBtn.focus();
+      }
+    });
     menu.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
         menu.classList.remove('open');
@@ -104,17 +114,102 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ---------- FAQ accordion ---------- */
-  document.querySelectorAll('.faq-item').forEach(function (item) {
+  document.querySelectorAll('.faq-item').forEach(function (item, i) {
     var btn = item.querySelector('.faq-question');
-    if (!btn) return;
+    var panel = item.querySelector('.faq-answer');
+    if (!btn || !panel) return;
+    var pid = 'faq-panel-' + i;
+    panel.id = pid;
+    panel.setAttribute('role', 'region');
+    btn.setAttribute('aria-controls', pid);
+    btn.setAttribute('aria-expanded', 'false');
+    var icon = btn.querySelector('.icon');
+    if (icon) icon.setAttribute('aria-hidden', 'true');
+    var label = btn.querySelector('span');
+    if (label) { if (!label.id) label.id = 'faq-q-' + i; panel.setAttribute('aria-labelledby', label.id); }
     btn.addEventListener('click', function () {
       var wasOpen = item.classList.contains('open');
       document.querySelectorAll('.faq-item.open').forEach(function (openItem) {
-        if (openItem !== item) openItem.classList.remove('open');
+        if (openItem !== item) {
+          openItem.classList.remove('open');
+          var ob = openItem.querySelector('.faq-question');
+          if (ob) ob.setAttribute('aria-expanded', 'false');
+        }
       });
       item.classList.toggle('open', !wasOpen);
+      btn.setAttribute('aria-expanded', wasOpen ? 'false' : 'true');
     });
   });
+
+  /* ---------- Ticker pause control (WCAG 2.2.2) ---------- */
+  var ticker = document.querySelector('.ticker');
+  if (ticker) {
+    ticker.setAttribute('aria-hidden', 'false');
+    var tbtn = document.createElement('button');
+    tbtn.type = 'button';
+    tbtn.className = 'ticker-toggle';
+    tbtn.setAttribute('aria-pressed', 'false');
+    tbtn.textContent = 'Pause';
+    tbtn.setAttribute('aria-label', 'Pause scrolling announcement banner');
+    tbtn.addEventListener('click', function () {
+      var paused = ticker.classList.toggle('is-paused');
+      tbtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      tbtn.textContent = paused ? 'Play' : 'Pause';
+      tbtn.setAttribute('aria-label', (paused ? 'Resume' : 'Pause') + ' scrolling announcement banner');
+    });
+    ticker.appendChild(tbtn);
+  }
+
+  /* ---------- Contact form: validation + WhatsApp hand-off (no data is sent to our servers) ---------- */
+  var cform = document.getElementById('contact-form');
+  if (cform) {
+    var status = document.getElementById('cf-status');
+    var fields = {
+      name: document.getElementById('cf-name'),
+      phone: document.getElementById('cf-phone'),
+      service: document.getElementById('cf-service'),
+      message: document.getElementById('cf-message'),
+      consent: document.getElementById('cf-consent')
+    };
+    var errs = {
+      name: 'Please enter your name.',
+      phone: 'Please enter a valid phone number (10 digits, or with +91).',
+      consent: 'Please tick the box to agree before sending.'
+    };
+    function setErr(key, msg) {
+      var f = fields[key], box = document.getElementById('cf-' + key + '-error');
+      if (!f || !box) return;
+      if (msg) { f.setAttribute('aria-invalid', 'true'); box.textContent = msg; box.hidden = false; }
+      else { f.removeAttribute('aria-invalid'); box.textContent = ''; box.hidden = true; }
+    }
+    function validPhone(v) {
+      var d = v.replace(/[\s\-()]/g, '');
+      return /^(\+91|91|0)?[6-9]\d{9}$/.test(d);
+    }
+    ['name', 'phone', 'consent'].forEach(function (k) {
+      fields[k].addEventListener('input', function () { setErr(k, ''); });
+      fields[k].addEventListener('change', function () { setErr(k, ''); });
+    });
+    cform.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var bad = [];
+      if (!fields.name.value.trim()) { setErr('name', errs.name); bad.push('name'); } else setErr('name', '');
+      if (!validPhone(fields.phone.value)) { setErr('phone', errs.phone); bad.push('phone'); } else setErr('phone', '');
+      if (!fields.consent.checked) { setErr('consent', errs.consent); bad.push('consent'); } else setErr('consent', '');
+      if (bad.length) {
+        status.hidden = false; status.className = 'form-status error';
+        status.textContent = 'Please fix ' + bad.length + (bad.length === 1 ? ' field' : ' fields') + ' below and try again.';
+        fields[bad[0]].focus();
+        return;
+      }
+      var msg = 'Hi Maheshwari Tours and Travels — ' + fields.name.value.trim() +
+        ' here (phone: ' + fields.phone.value.trim() + '). I need: ' + fields.service.value + '.' +
+        (fields.message.value.trim() ? ' ' + fields.message.value.trim() : '');
+      status.hidden = false; status.className = 'form-status';
+      status.textContent = 'Opening WhatsApp with your message. If it does not open, call +91 93079 74659.';
+      window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    });
+  }
 
   /* ---------- Header shadow on scroll (runs on every page) ---------- */
   var header = document.querySelector('.site-header');
@@ -177,6 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var pkgOutstationLink = document.getElementById('pkg-outstation-link');
 
   var currentVehicleId = null;
+  var lastFocus = null;
 
   function waLink(message) {
     return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
@@ -201,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function () {
       tr.innerHTML =
         '<td class="route-name">' + pickupLabel + ' → ' + row.d + '</td>' +
         '<td class="num ' + priceClass + '">₹' + row.p.toLocaleString('en-IN') + '</td>' +
-        '<td class="num"><a href="' + waLink('Hi Maheshwari Tours and Travels, I would like to book a ' + v.name + ' from ' + pickupLabel + ' to ' + row.d + '. Fare: ₹' + row.p + '.') + '" target="_blank" rel="noopener noreferrer" class="btn-enquire">Book</a></td>';
+        '<td class="num"><a href="' + waLink('Hi Maheshwari Tours and Travels, I would like to book a ' + v.name + ' from ' + pickupLabel + ' to ' + row.d + '. Indicative fare shown on your website: ₹' + row.p + ' — please confirm.') + '" target="_blank" rel="noopener noreferrer" class="btn-enquire">Book<span class="sr-only"> ' + v.name + ' from ' + pickupLabel + ' to ' + row.d + ' on WhatsApp (opens in a new tab)</span></a></td>';
       modalRateBody.appendChild(tr);
     });
   }
@@ -213,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     modalName.textContent = v.name;
     modalTagline.textContent = v.tagline;
-    modalIcon.innerHTML = '<img src="' + (VEHICLE_IMAGES[vehicleId] || '') + '" alt="' + v.name + '" width="120" height="64">';
+    modalIcon.innerHTML = '<img src="' + (VEHICLE_IMAGES[vehicleId] || '') + '" alt="' + (VEHICLE_ALT[vehicleId] || '') + '" width="120" height="64">';
     modalBadges.innerHTML =
       '<span class="vbadge">' + (v.ac ? 'AC' : 'Non-AC') + '</span>' +
       '<span class="vbadge">' + v.seats + ' Seats</span>' +
@@ -226,20 +322,26 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     renderRateTable(vehicleId, 'dabolim');
 
-    modalBookLink.textContent = v.quoteOnly ? 'Get a Quote on WhatsApp' : 'Book This Vehicle on WhatsApp';
+    modalBookLink.innerHTML = (v.quoteOnly ? 'Get a Quote on WhatsApp' : 'Book This Vehicle on WhatsApp') + NEW_TAB_NOTE;
     modalBookLink.href = waLink('Hi Maheshwari Tours and Travels, I would like ' + (v.quoteOnly ? 'a quote for a ' : 'to book a ') + v.name + '. Please share availability' + (v.quoteOnly ? ' and pricing.' : '.'));
 
     pkgHalfLink.href = waLink('Hi Maheshwari Tours and Travels, I would like a Half Day package quote for a ' + v.name + '.');
     pkgFullLink.href = waLink('Hi Maheshwari Tours and Travels, I would like a Full Day package quote for a ' + v.name + '.');
     pkgOutstationLink.href = waLink('Hi Maheshwari Tours and Travels, I would like an Outstation multi-day package quote for a ' + v.name + '.');
 
+    lastFocus = document.activeElement;
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
+    document.querySelectorAll('main, .site-footer, .site-header, .mobile-bar, .ticker').forEach(function (n) { n.setAttribute('inert', ''); });
+    modal.removeAttribute('inert');
+    modalClose.focus();
   }
 
   function closeModal() {
     modal.classList.remove('open');
     document.body.style.overflow = '';
+    document.querySelectorAll('[inert]').forEach(function (n) { n.removeAttribute('inert'); });
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
   document.querySelectorAll('.vehicle-card').forEach(function (card) {
@@ -253,7 +355,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.target === modal) closeModal();
   });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeModal(); return; }
+    if (e.key === 'Tab') {
+      var f = modal.querySelectorAll('a[href], button:not([disabled])');
+      var vis = Array.prototype.filter.call(f, function (el) { return el.offsetParent !== null; });
+      if (!vis.length) return;
+      var first = vis[0], last = vis[vis.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
   });
 
   modalTabs.forEach(function (tab) {

@@ -1,11 +1,194 @@
 /* Maheshwari Tours and Travels — standalone stylesheet
-   No build step, no CDN dependency. Works even if fonts fail to load. */
+   No build step, no CDN dependency, no third-party requests. Fonts are self-hosted. */
+
+/* Self-hosted fonts (SIL OFL 1.1) — Oswald, Inter, JetBrains Mono via Fontsource. No third-party requests. */
+/* oswald-latin-ext-400-normal */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(fonts/oswald-latin-ext-400-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* oswald-latin-400-normal */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(fonts/oswald-latin-400-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* oswald-latin-ext-500-normal */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(fonts/oswald-latin-ext-500-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* oswald-latin-500-normal */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(fonts/oswald-latin-500-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* oswald-latin-ext-600-normal */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(fonts/oswald-latin-ext-600-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* oswald-latin-600-normal */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(fonts/oswald-latin-600-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* oswald-latin-ext-700-normal */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(fonts/oswald-latin-ext-700-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* oswald-latin-700-normal */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(fonts/oswald-latin-700-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* inter-latin-ext-400-normal */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(fonts/inter-latin-ext-400-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* inter-latin-400-normal */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(fonts/inter-latin-400-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* inter-latin-ext-500-normal */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(fonts/inter-latin-ext-500-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* inter-latin-500-normal */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(fonts/inter-latin-500-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* inter-latin-ext-600-normal */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(fonts/inter-latin-ext-600-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* inter-latin-600-normal */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(fonts/inter-latin-600-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* inter-latin-ext-700-normal */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(fonts/inter-latin-ext-700-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* inter-latin-700-normal */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(fonts/inter-latin-700-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* jetbrains-mono-latin-ext-500-normal */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(fonts/jetbrains-mono-latin-ext-500-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* jetbrains-mono-latin-500-normal */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(fonts/jetbrains-mono-latin-500-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* jetbrains-mono-latin-ext-700-normal */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(fonts/jetbrains-mono-latin-ext-700-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+/* jetbrains-mono-latin-700-normal */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(fonts/jetbrains-mono-latin-700-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
 
 :root {
   --ink: #12213B;
   --ink2: #1B335A;
   --marigold: #E7A23A;
-  --marigold2: #C9812A;
+  --marigold2: #85520A; /* darkened from #C9812A: 5.6:1 on --paper (WCAG AA text) */
   --paper: #F3EEE2;
   --line: #D9D0B8;
   --go: #215C41;
@@ -232,7 +415,6 @@ img, svg { display: block; }
   margin-top: 20px;
   font-size: 1rem;
   color: var(--ink2);
-  opacity: 0.9;
   max-width: 540px;
 }
 .hero-ctas {
@@ -323,7 +505,7 @@ img, svg { display: block; }
   0%, 100% { opacity: 1; }
   50% { opacity: .55; }
 }
-.status-go { color: var(--go); }
+.status-go { color: #6FD6A2; } /* light green: 8:1 on navy; --go failed (2:1) */
 .status-wait { color: var(--marigold); }
 .board-footer {
   padding: 12px 16px;
@@ -332,7 +514,7 @@ img, svg { display: block; }
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(243,238,226,0.5);
+  color: rgba(243,238,226,0.78);
 }
 
 .route-dash {
@@ -422,7 +604,7 @@ img, svg { display: block; }
   text-transform: uppercase;
   margin: 0 0 8px;
 }
-.service-desc { font-size: 14px; color: var(--ink2); opacity: 0.85; }
+.service-desc { font-size: 14px; color: var(--ink2); }
 
 /* ---------- Fleet ---------- */
 .fleet-section { background: var(--ink); color: var(--paper); border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
@@ -463,17 +645,17 @@ img, svg { display: block; }
   font-size: 1rem;
   margin: 0 0 8px;
 }
-.why-item p { font-size: 14px; color: var(--ink2); opacity: 0.85; margin: 0; }
+.why-item p { font-size: 14px; color: var(--ink2); margin: 0; }
 
 /* ---------- Testimonials ---------- */
-.testimonials-section { background: var(--paper); border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+.testimonials-section-unused { background: var(--paper); border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
 .testimonials-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
 }
 .testimonial-card { background: var(--white); border: 2px solid var(--ink); padding: 22px; }
-.testimonial-quote { font-size: 14px; color: var(--ink2); opacity: 0.9; margin-bottom: 16px; }
+.testimonial-quote { font-size: 14px; color: var(--ink2); margin-bottom: 16px; }
 .testimonial-attr {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -554,7 +736,7 @@ img, svg { display: block; }
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(243,238,226,0.5);
+  color: rgba(243,238,226,0.78);
 }
 
 /* ---------- Mobile sticky bar ---------- */
@@ -727,7 +909,6 @@ img, svg { display: block; }
   margin-top: 14px;
   font-size: 12px;
   color: var(--ink2);
-  opacity: 0.75;
 }
 .calc-cta {
   margin-top: 16px;
@@ -836,7 +1017,7 @@ img, svg { display: block; }
   gap: 12px;
 }
 .route-card-name { font-family: var(--font-display); text-transform: uppercase; font-size: 15px; }
-.route-card-dist { font-family: var(--font-mono); font-size: 11px; color: var(--ink2); opacity: 0.7; }
+.route-card-dist { font-family: var(--font-mono); font-size: 11px; color: var(--ink2); }
 .route-card-price { font-family: var(--font-display); font-size: 1.3rem; color: var(--go); white-space: nowrap; }
 
 /* Legal / long-form content pages */
@@ -940,7 +1121,7 @@ img, svg { display: block; }
 .vehicle-icon { display: block; width: 100%; margin: -18px -18px 12px; }
 .vehicle-icon img { display: block; width: 100%; height: auto; border-bottom: 2px solid var(--ink); }
 .vehicle-name { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; color: var(--ink); text-transform: uppercase; }
-.vehicle-tagline { font-size: 12.5px; color: var(--ink2); opacity: 0.75; }
+.vehicle-tagline { font-size: 12.5px; color: var(--ink2); }
 .vehicle-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .vbadge {
   font-family: var(--font-mono);
@@ -990,7 +1171,7 @@ img, svg { display: block; }
 .modal-icon { flex-shrink: 0; width: 120px; border: 2px solid var(--ink); overflow: hidden; }
 .modal-icon img { display: block; width: 100%; height: auto; }
 .modal-head h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; margin: 0 0 2px; color: var(--ink); text-transform: uppercase; }
-.modal-tagline { font-size: 13px; color: var(--ink2); opacity: 0.75; margin: 0 0 6px; }
+.modal-tagline { font-size: 13px; color: var(--ink2); margin: 0 0 6px; }
 
 .modal-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
 .modal-tab {
@@ -1033,7 +1214,7 @@ img, svg { display: block; }
   gap: 12px;
 }
 .package-mini-name { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--ink); }
-.package-mini-name span { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink2); opacity: 0.7; margin-top: 2px; }
+.package-mini-name span { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink2); margin-top: 2px; }
 
 @media (min-width: 600px) {
   .vehicle-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1110,8 +1291,8 @@ img, svg { display: block; }
   white-space: nowrap;
   flex-shrink: 0;
 }
-.tour-desc { font-size: 13.5px; color: var(--ink2); opacity: 0.85; flex-grow: 1; }
-.tour-vehicles { font-family: var(--font-mono); font-size: 11px; color: var(--ink2); opacity: 0.7; letter-spacing: 0.01em; }
+.tour-desc { font-size: 13.5px; color: var(--ink2); flex-grow: 1; }
+.tour-vehicles { font-family: var(--font-mono); font-size: 11px; color: var(--ink2); letter-spacing: 0.01em; }
 
 @media (min-width: 700px) {
   .tour-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1215,3 +1396,206 @@ img, svg { display: block; }
   .reveal { opacity: 1 !important; }
   .mobile-menu { max-height: none !important; opacity: 1 !important; }
 }
+
+
+/* ============================================================
+   ACCESSIBILITY, FORMS, LEGAL — added in compliance pass
+   ============================================================ */
+.sr-only {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: 12px; top: -60px; z-index: 100;
+  background: var(--ink); color: var(--paper); padding: 12px 18px;
+  font-family: var(--font-mono); font-size: 13px; border: 2px solid var(--marigold);
+}
+.skip-link:focus { top: 12px; }
+
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; box-shadow: 0 0 0 6px var(--marigold); border-radius: 2px; }
+.site-footer :focus-visible, .ticker :focus-visible, .board :focus-visible, .clients-section :focus-visible, .contact-box :focus-visible {
+  outline-color: var(--paper); box-shadow: 0 0 0 6px var(--ink);
+}
+main:focus { outline: none; }
+a:not([class]) { text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.legal-content a, .info-card a, .faq-answer-inner a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Closed menus / answers must not be reachable by keyboard or screen reader */
+.mobile-menu:not(.open) { visibility: hidden; }
+.faq-answer { visibility: hidden; transition: max-height 0.2s ease, visibility 0s linear 0.2s; }
+.faq-item.open .faq-answer { max-height: 900px; visibility: visible; transition: max-height 0.2s ease, visibility 0s; }
+
+/* Touch targets */
+.btn-enquire, .modal-tab, .menu-toggle, .modal-close, .faq-question { min-height: 44px; }
+.btn-enquire { display: inline-flex; align-items: center; }
+.nav-desktop a, .footer-list a { display: inline-block; padding: 6px 0; }
+.mobile-menu-inner a { padding: 6px 0; }
+
+/* Ticker pause control (WCAG 2.2.2) */
+.ticker { position: relative; }
+.ticker-toggle {
+  position: absolute; right: 0; top: 0; bottom: 0; z-index: 2; padding: 0 14px;
+  background: var(--ink); color: var(--paper); border: 0; border-left: 1px solid rgba(243,238,226,0.3);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+}
+.ticker.is-paused .ticker-track { animation-play-state: paused; }
+
+/* Forms */
+.contact-form .hint { display: block; font-size: 12.5px; color: var(--ink2); margin-top: 6px; line-height: 1.5; }
+.contact-form .req { color: #9B1C1C; font-weight: 700; }
+.contact-form input, .contact-form textarea, .contact-form select { min-height: 44px; font-size: 16px; }
+.contact-form input:focus-visible, .contact-form textarea:focus-visible, .contact-form select:focus-visible { outline-offset: 0; }
+.contact-form [aria-invalid="true"] { border-color: #9B1C1C; background: #FFF4F2; }
+.field-error { color: #9B1C1C; font-size: 13px; font-weight: 600; margin-top: 6px; }
+.form-status { margin-top: 4px; padding: 12px 14px; border: 2px solid var(--ink); background: var(--white); font-size: 14px; color: var(--ink); }
+.form-status[hidden] { display: none; }
+.form-status.error { border-color: #9B1C1C; }
+.consent-row { display: flex; gap: 12px; align-items: flex-start; }
+.consent-row input[type="checkbox"] { width: 24px; height: 24px; min-height: 24px; flex-shrink: 0; margin-top: 2px; accent-color: var(--ink); }
+.contact-form .consent-row label { text-transform: none; letter-spacing: 0; font-family: var(--font-body); font-size: 13.5px; line-height: 1.5; margin: 0; }
+.contact-form .consent-row a { text-decoration: underline; }
+
+/* Notices, legal tables, owner to-do markers */
+.todo { background: #FFE9A8; color: #3B2A00; padding: 1px 6px; border: 1px dashed #8A5A00; font-weight: 600; }
+.illustrative-note { font-size: 12.5px; color: var(--ink2); margin-top: 14px; }
+.sample-tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--marigold); }
+.legal-content h3 { font-family: var(--font-display); font-size: 1.05rem; margin: 22px 0 6px; color: var(--ink); }
+.legal-content table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+.legal-content th, .legal-content td { border: 2px solid var(--ink); padding: 10px 12px; text-align: left; vertical-align: top; color: var(--ink2); }
+.legal-content th { background: var(--ink); color: var(--paper); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+.legal-content caption { text-align: left; font-weight: 600; padding-bottom: 6px; color: var(--ink); }
+.legal-toc { border: 2px solid var(--ink); background: var(--white); padding: 16px 20px; margin-bottom: 28px; }
+.legal-toc ul { margin: 6px 0 0; padding-left: 18px; list-style: disc; }
+.facts { display: grid; grid-template-columns: 1fr; gap: 0; margin: 0; }
+.facts dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink2); margin-top: 14px; }
+.facts dd { margin: 2px 0 0; font-size: 14.5px; color: var(--ink); }
+@media (min-width: 640px) { .facts { grid-template-columns: 200px 1fr; column-gap: 20px; } .facts dt, .facts dd { margin-top: 12px; } }
+.fare-table caption { text-align: left; padding: 0 0 8px; font-size: 13px; color: var(--ink2); caption-side: bottom; }
+
+@media (forced-colors: active) {
+  .btn, .btn-enquire, .vbadge { border: 2px solid ButtonText; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none !important; }
+  .faq-answer, .mobile-menu, .modal-overlay, .modal-panel { transition: none !important; }
+}
+.clients-note { max-width: 640px; margin: 22px auto 0; text-align: center; font-size: 12.5px; line-height: 1.5; color: rgba(243,238,226,0.85); }
+.table-note { font-size: 13px; color: var(--ink2); margin: -6px 0 16px; }
+.footer-bottom nav { display: inline; }
+
+/* ---- Goa tour packages (added 29 Oct 2026) ---- */
+.tour-intro { max-width: 760px; font-size: 14.5px; line-height: 1.75; color: var(--ink2); margin: 0 0 18px; }
+.tour-grid.tour-grid-posters { grid-template-columns: 1fr; }
+@media (min-width: 700px) { .tour-grid.tour-grid-posters { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .tour-grid.tour-grid-posters { grid-template-columns: repeat(3, 1fr); } }
+.tour-card .card-link { color: inherit; text-decoration: none; }
+.tour-card .card-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.tour-figure { margin: 0; }
+.tour-figure img { display: block; width: 100%; height: auto; border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--marigold); }
+.tour-detail { align-items: start; }
+.tour-places { margin: 0; padding: 0; list-style: none; }
+.tour-places li, .package-list li { margin-bottom: 8px; }
+.rel-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
+.rel-list a { text-decoration: underline; text-underline-offset: 3px; color: var(--ink); font-weight: 600; }
+.rel-dur { color: var(--ink2); font-size: 13px; }
+.hint { font-size: 13px; color: var(--ink2); line-height: 1.6; margin: 10px 0 0; }
+.poster-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 18px; }
+@media (min-width: 700px) { .poster-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1100px) { .poster-grid { grid-template-columns: repeat(5, 1fr); } }
+.poster-card { display: flex; flex-direction: column; gap: 4px; background: var(--white); border: 2px solid var(--ink); padding: 0 0 10px; color: var(--ink); text-decoration: none; }
+.poster-card img { display: block; width: 100%; height: auto; border-bottom: 2px solid var(--ink); }
+.poster-card:hover { box-shadow: 5px 5px 0 var(--marigold); transform: translate(-2px, -2px); }
+.poster-name { font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; text-transform: uppercase; padding: 8px 10px 0; line-height: 1.2; }
+.poster-dur { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink2); padding: 0 10px; }
+.tour-detail .facts dd { overflow-wrap: anywhere; }
+
+/* ---- Fare calculator + logo (added 30-31 Oct 2026) ---- */
+.fc-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 16px; }
+.fc-chip { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; padding: 8px 12px; min-height: 44px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); cursor: pointer; }
+.fc-chip span { color: var(--ink2); }
+.fc-chip:hover { background: var(--ink); color: var(--paper); }
+.fc-chip:hover span { color: var(--paper); }
+.fc-hint { display: block; font-size: 12.5px; color: var(--ink2); margin-top: 6px; line-height: 1.5; }
+.fc-result { border: 2px solid var(--ink); background: var(--paper); padding: 16px; margin-bottom: 16px; text-align: center; }
+.fc-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink2); margin: 0 0 4px; }
+.fc-total { font-family: var(--font-display); font-size: 2rem; line-height: 1.15; color: var(--go); margin: 0; }
+.fc-lines { list-style: none; margin: 10px 0 0; padding: 0; font-size: 13.5px; color: var(--ink2); line-height: 1.6; text-align: left; }
+.fc-lines:empty { display: none; }
+.fc-disclaimer { margin-top: 14px; font-size: 12.5px; line-height: 1.6; }
+.calc-field input[aria-invalid="true"] { border-color: #9B1C1C; background: #FFF4F2; }
+.fc-steps { padding-left: 20px; list-style: decimal; font-size: 14px; color: var(--ink2); line-height: 1.7; }
+.fc-steps li { margin-bottom: 6px; }
+.fc-layout { align-items: start; }
+.fare-table th[scope="row"] { text-align: left; font-weight: 600; color: var(--ink); }
+.logo-img { display: block; height: 54px; width: auto; border: 2px solid var(--ink); border-radius: 8px; background: var(--white); flex-shrink: 0; }
+.footer-brand-row .logo-img { height: 48px; border-color: var(--marigold); }
+.fare-table tbody th[scope="row"] { background: transparent; color: var(--ink); text-transform: none; letter-spacing: 0; font-family: var(--font-body); font-size: inherit; border-bottom: 1px solid var(--line); padding: 14px 16px; }
+
+/* ---- Goa taxi fare estimator (added 31 Oct 2026) ---- */
+.est-modes, .est-compare { border: 2px solid var(--ink); padding: 12px 14px; margin: 0 0 16px; min-width: 0; }
+.est-modes legend, .est-compare legend { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 0 6px; color: var(--ink); }
+.est-modes { display: flex; flex-wrap: wrap; gap: 8px; }
+.est-mode { position: relative; flex: 1 1 130px; }
+.est-mode input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.est-mode span { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 44px; padding: 8px 10px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); font-size: 14px; font-weight: 600; }
+.est-mode input:checked + span { background: var(--ink); color: var(--paper); }
+.est-mode input:focus-visible + span { outline: 3px solid var(--marigold2); outline-offset: 2px; }
+.es-km-range { width: 100%; min-height: 44px; accent-color: var(--go); }
+.es-range-out { display: flex; justify-content: space-between; }
+.es-cmp { margin-top: 12px; font-size: 14px; }
+.cmp-row { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 8px; color: var(--ink2); line-height: 1.5; }
+.cmp-row b { color: var(--ink); white-space: nowrap; }
+.cmp-verdict { font-weight: 700; color: var(--go); margin: 8px 0; }
+.fuel-card { border: 2px solid var(--ink); padding: 16px; background: var(--paper); }
+.fuel-list { list-style: none; padding: 0; margin: 0 0 8px; font-size: 16px; }
+.fc-compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 12px 0; }
+.fc-card { border: 2px solid var(--ink); padding: 16px; background: var(--paper); }
+.fc-card h3 { margin: 0 0 8px; }
+.fc-card ul, .fc-why { padding-left: 18px; line-height: 1.7; font-size: 14.5px; color: var(--ink2); }
+.es-f-air[hidden], .es-f-sight[hidden], .es-f-km[hidden] { display: none; }
+
+/* ---- circular logo (31 Oct 2026) ---- logo-circle */
+.logo-img { height: 64px; width: 64px; border: 0; border-radius: 50%; background: var(--white); object-fit: cover; }
+.footer-brand-row .logo-img { height: 52px; width: 52px; border: 0; }
+@media (min-width: 1100px) and (max-width: 1280px) { .nav-desktop { gap: 16px; } .nav-desktop a { letter-spacing: 0.04em; } }
+/* ---- estimator v8: slider emphasis, seat field ---- */
+.es-slider-box { border: 2px solid var(--ink); padding: 14px 16px; margin: 0 0 16px; background: var(--paper); }
+.es-slider-label { display: block; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+.es-km-out { font-family: var(--font-display); font-size: 1.6rem; color: var(--go); letter-spacing: 0; text-transform: none; }
+.es-slider-sub { color: var(--ink2); text-transform: none; letter-spacing: 0; }
+.es-slider-box .es-km-range { width: 100%; height: 44px; margin: 0; accent-color: var(--go); cursor: pointer; }
+.es-scale { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink2); margin: 2px 0 12px; }
+.es-km-field { max-width: 220px; margin: 0; }
+.es-f-seat[hidden] { display: none; }
+/* ---- WhatsApp popup + reviews (31 Oct 2026) ---- */
+.mtt-pop-overlay { position: fixed; inset: 0; background: rgba(18,33,59,0.6); z-index: 1000; display: flex; align-items: flex-end; justify-content: center; padding: 16px; }
+.mtt-pop { position: relative; background: var(--paper); border: 2px solid var(--ink); box-shadow: 8px 8px 0 var(--marigold); max-width: 440px; width: 100%; max-height: 90vh; overflow: auto; padding: 22px 20px 18px; }
+.mtt-pop-x { position: absolute; top: 6px; right: 6px; width: 44px; height: 44px; font-size: 28px; line-height: 1; background: transparent; border: 0; color: var(--ink); cursor: pointer; }
+.mtt-pop-eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink2); margin: 0 0 4px; }
+.mtt-pop h2 { margin: 0 0 6px; font-size: 1.6rem; }
+.mtt-pop-sub { font-size: 14px; color: var(--ink2); margin: 0 0 12px; line-height: 1.5; }
+.mtt-pop-list { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 8px; }
+.mtt-pop-list a { display: flex; align-items: center; min-height: 48px; padding: 10px 14px; border: 2px solid var(--ink); background: var(--white); color: var(--ink); font-weight: 600; font-size: 15px; text-decoration: none; }
+.mtt-pop-list a:hover, .mtt-pop-list a:focus-visible { background: #225F40; color: #fff; border-color: #225F40; }
+.mtt-pop-foot { font-size: 13.5px; margin: 0; color: var(--ink2); }
+.mtt-pop-foot a { color: var(--ink); text-decoration: underline; }
+.mtt-pop-no { background: none; border: 0; color: var(--ink); text-decoration: underline; cursor: pointer; font: inherit; min-height: 44px; padding: 0 6px; }
+@media (min-width: 640px) { .mtt-pop-overlay { align-items: center; } }
+.review-invite { border: 2px solid var(--ink); padding: 20px; background: var(--paper); }
+.review-items { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 12px; }
+.review-items li { border-left: 4px solid var(--marigold); padding: 4px 0 4px 14px; }
+.review-text { margin: 0 0 4px; font-size: 15px; line-height: 1.6; }
+.review-by { margin: 0; font-size: 13px; color: var(--ink2); }
+
+/* ---- header: tighter tagline so it sits clear of the menu (31 Oct 2026) logo-sub-tight ---- */
+.logo-sub { letter-spacing: 0.08em; font-size: 10px; white-space: nowrap; }
+.logo { margin-right: 8px; }
+.es-f-custom[hidden] { display: none; }
+.es-f-custom { margin: 0 0 16px; }
+.es-f-custom input { width: 100%; }
+
+/* home calculator: optional comparison collapsed (4 Nov 2026) */
+.est-more { margin: 0 0 16px; }
+.est-more > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-weight: 600; border: 2px solid var(--ink); padding: 8px 14px; background: var(--paper); }
+.est-more > summary:focus-visible { outline: 3px solid var(--marigold2); outline-offset: 2px; }
+.est-more[open] > summary { margin-bottom: 8px; }
